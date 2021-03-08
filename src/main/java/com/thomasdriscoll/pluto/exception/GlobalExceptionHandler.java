@@ -1,7 +1,7 @@
-package com.thomasdriscoll.javatemplate.exception;
+package com.thomasdriscoll.pluto.exception;
 
-import com.thomasdriscoll.javatemplate.lib.exceptions.DriscollException;
-import com.thomasdriscoll.javatemplate.lib.responses.DriscollResponse;
+import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
+import com.thomasdriscoll.pluto.lib.responses.DriscollResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

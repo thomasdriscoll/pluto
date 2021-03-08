@@ -1,10 +1,10 @@
-package com.thomasdriscoll.javatemplate;
+package com.thomasdriscoll.pluto;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class JavatemplateApplicationTests {
+class plutoApplicationTests {
 
 	@Test
 	void contextLoads() {

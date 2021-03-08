@@ -17,4 +17,4 @@ RUN ./gradlew build
 #Port mapping - HOST_PORT:CONTAINER_PORT
 EXPOSE 8018
 EXPOSE 80
-ENTRYPOINT ["java", "-jar", "/app/build/libs/javatemplate-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/build/libs/pluto-0.0.1-SNAPSHOT.jar"]

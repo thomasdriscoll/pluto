@@ -1,4 +1,4 @@
-package com.thomasdriscoll.javatemplate.lib.exceptions;
+package com.thomasdriscoll.pluto.lib.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;

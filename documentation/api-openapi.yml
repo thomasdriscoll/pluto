@@ -6,10 +6,10 @@ servers:
   - url: 'http://localhost:8018'
     description: Generated server url
 paths:
-  '/{name}':
-    get:
+  '/budget':
+    post:
       tags:
-        - template-controller
+        - budgget-controller
       operationId: dummyFunction
       parameters:
         - name: name

@@ -1,2 +1,2 @@
-rootProject.name = "javatemplate"
+rootProject.name = "pluto"
 include("api")

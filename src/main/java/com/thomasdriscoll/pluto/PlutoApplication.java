@@ -1,13 +1,13 @@
-package com.thomasdriscoll.javatemplate;
+package com.thomasdriscoll.pluto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class JavatemplateApplication {
+public class PlutoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JavatemplateApplication.class, args);
+		SpringApplication.run(PlutoApplication.class, args);
 	}
 
 }
