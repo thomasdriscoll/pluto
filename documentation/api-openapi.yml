@@ -1,36 +1,177 @@
-openapi: 3.0.1
+openapi: "3.0.1"
 info:
-  title: OpenAPI definition
+  title: ""
   version: v0
 servers:
-  - url: 'http://localhost:8018'
+  - url: 'http://localhost:8020'
     description: Generated server url
 paths:
-  '/budget':
+  '/users/{userId}/budget':
     post:
       tags:
-        - budgget-controller
-      operationId: dummyFunction
+        - budgetController
+      operationId: createBudget
       parameters:
-        - name: name
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '201':
+          description: Budget created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BudgetResponse'
+    get:
+      tags:
+        - budgetController
+      operationId: getBudget
+      parameters:
+        - name: userId
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: OK
+          description: Budget retrieved
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/DriscollResponseString'
+                $ref: '#/components/schemas/BudgetResponse'
+  '/users/{userId}/category':
+    post:
+      tags:
+        - categoryController
+      operationId: createCategory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Category created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+    put:
+      tags:
+        - categoryController
+      operationId: updateCategory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Category updated
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+  '/users/{userId}/category/{categoryName}':
+    delete:
+      tags:
+        - categoryController
+      operationId: deleteCategory
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: categoryName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: category deleted
+
 components:
   schemas:
-    DriscollResponseString:
+    Budget:
+      type: object
+      properties:
+        category:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    BudgetRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: "dummyUserId12345"
+        income:
+          type: number
+          example: 50000
+        zipCode:
+          type: integer
+          example: 60622
+    BudgetResponse:
       type: object
       properties:
         status:
           type: integer
           format: int32
         data:
+          $ref: '#/components/schemas/Budget'
+    Category:
+      type: object
+      properties:
+        category_name:
           type: string
+          example: "Books"
+        parent_category:
+          type: string
+          example: "Shopping"
+        isNeed:
+          type: boolean
+          example: false
+        isWant:
+          type: boolean
+          example: true
+        isSavings:
+          type: boolean
+          example: false
+        isIncome:
+          type: boolean
+          example: false
+        dollar_amount:
+          type: integer
+          example: 50
+        periodicity:
+          type: string
+          example: "monthly"
+    CategoryResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        data:
+          $ref: '#/components/schemas/Category'
