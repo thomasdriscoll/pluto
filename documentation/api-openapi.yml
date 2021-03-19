@@ -143,10 +143,10 @@ components:
     Category:
       type: object
       properties:
-        category_name:
+        categoryName:
           type: string
           example: "Books"
-        parent_category:
+        parentCategory:
           type: string
           example: "Shopping"
         isNeed:
@@ -161,12 +161,12 @@ components:
         isIncome:
           type: boolean
           example: false
-        dollar_amount:
-          type: integer
+        dollarAmount:
+          type: number
           example: 50
         periodicity:
-          type: string
-          example: "monthly"
+          type: integer
+          example: 12
     CategoryResponse:
       type: object
       properties:

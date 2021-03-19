@@ -1,6 +1,6 @@
 spring:
   application:
-    name: pluto
+    name: javatemplate
   profiles:
     active: development
   cloud:
