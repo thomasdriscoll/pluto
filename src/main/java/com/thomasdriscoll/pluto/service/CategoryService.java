@@ -9,7 +9,16 @@ public class CategoryService {
 
     public Category createCategory(String userId, Category category) throws DriscollException {
         //Validate input
-
         return category;
     }
+
+    public Category updateCategory(String userId, Category category) throws DriscollException {
+        //Validate input
+        return category;
+    }
+
+    public void deleteCategory(String userId, String categoryName) throws DriscollException {
+
+    }
+
 }

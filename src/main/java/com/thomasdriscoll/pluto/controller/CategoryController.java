@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users/{userId}/category")
 public class CategoryController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -22,6 +22,25 @@ public class CategoryController {
             @RequestBody Category category,
             @PathVariable String userId
     ) throws DriscollException {
-        return ResponseEntity.ok(new DriscollResponse(HttpStatus.OK.value(), categoryService.createCategory(userId, category)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new DriscollResponse<>(HttpStatus.CREATED.value(), categoryService.createCategory(userId, category)));
+    }
+
+    @PutMapping
+    public ResponseEntity<DriscollResponse<Category>> updateCategory(
+            @RequestBody Category category,
+            @PathVariable String userId
+    ) throws DriscollException {
+        return ResponseEntity.ok(new DriscollResponse<>(HttpStatus.OK.value(), categoryService.updateCategory(userId, category)));
+    }
+
+    @DeleteMapping
+    @RequestMapping("/{categoryName}")
+    public ResponseEntity<DriscollResponse> deleteCategory (
+        @PathVariable String userId,
+        @PathVariable String categoryName
+    ) throws DriscollException {
+        categoryService.deleteCategory(userId, categoryName);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new DriscollResponse(HttpStatus.OK.value(), null));
+
     }
 }
