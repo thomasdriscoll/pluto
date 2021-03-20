@@ -21,6 +21,7 @@ public class CategoryService {
         //Validate input
         validateUser(userId);
         validateCategory(userId, category);
+
         //Save input
         return categoryRepository.save(new CategoryDao(category)).toCategory();
     }
@@ -36,6 +37,7 @@ public class CategoryService {
 
 
     // Helper functions
+    // Need to update this validateUser with call to UserApi
     private void validateUser(String userId) throws DriscollException {
         if(categoryRepository.findByUserId(userId).isEmpty()){
             throw new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
@@ -44,11 +46,12 @@ public class CategoryService {
 
     private void validateCategory(String userId, Category category) throws DriscollException {
         validateLogic(category.getIsNeed(), category.getIsWant(), category.getIsSavings(), category.getIsIncome());
-        if(category.getParentCategory().equals("") || category.getParentCategory() == null){
+        if(category.getParentCategory() != null){
             validateParent(userId, category.getParentCategory());
         }
-        validatePeriodicity(category.getPeriodicity());
-
+        if(categoryRepository.findByUserIdAndCategoryName(userId, category.getCategoryName()) != null){
+            throw new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_NAME.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_NAME.getMessage());
+        }
     }
 
     private void validateLogic(Boolean a, Boolean b, Boolean c, Boolean d) throws DriscollException {
@@ -60,11 +63,6 @@ public class CategoryService {
     private void validateParent(String userId, String parent) throws DriscollException {
         if(categoryRepository.findByUserIdAndParentCategory(userId, parent).isEmpty()){
             throw new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_PARENT.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_PARENT.getMessage());
-        }
-    }
-    private void validatePeriodicity(Integer period) throws DriscollException {
-        if(period < 0 || period > 12){
-            throw new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_PERIOD.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_PERIOD.getMessage());
         }
     }
 

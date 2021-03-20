@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,33 +41,37 @@ class CategoryServiceTest {
             isSavings(false).
             isIncome(false).
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
     private Category NO_PARENT = Category.builder().
-            categoryName("Books").
+            categoryName("Shopping").
             isNeed(false).
             isWant(true).
             isSavings(false).
             isIncome(false).
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
     private Category BAD_CATEGORY = Category.builder().
-            categoryName("Books").
+            categoryName("Gibberish").
             isNeed(false).
             isWant(true).
             isSavings(false).
             isIncome(true).     //Booleans are mutually exclusive
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
     private CategoryDao DAO = new CategoryDao(TEST);
+    private List<CategoryDao> LIST_DAO = new ArrayList<CategoryDao>(){{ add(DAO); }};
 
     @BeforeEach
     void setup(){
+        when(categoryRepository.findByUserId(USER_ID)).thenReturn(LIST_DAO);
+        when(categoryRepository.findByUserIdAndParentCategory(USER_ID, TEST.getParentCategory())).thenReturn(new ArrayList<CategoryDao>(){{add(DAO);}});
+        when(categoryRepository.findByUserIdAndCategoryName(USER_ID, TEST.getCategoryName())).thenReturn(null);
+        when(categoryRepository.findByUserIdAndCategoryName(USER_ID, NO_PARENT.getCategoryName())).thenReturn(null);
+        when(categoryRepository.save(DAO)).thenReturn(DAO);
+        when(categoryRepository.save(new CategoryDao(NO_PARENT))).thenReturn(new CategoryDao(NO_PARENT));
 
     }
 
@@ -82,7 +87,7 @@ class CategoryServiceTest {
         @Test
         public void whenValidUserIdAndNoParentCategory_returnCategory() throws DriscollException {
             Category actual = categoryService.createCategory(USER_ID, NO_PARENT);
-            assertEquals(TEST, actual);
+            assertEquals(NO_PARENT, actual);
         }
 
         @Test
@@ -117,10 +122,25 @@ class CategoryServiceTest {
 
         @Test
         public void whenValidUserIdAndInvalidCategoryByParent_throwDriscollException() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_STATE.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_STATE.getMessage());
-            DriscollException actual = assertThrows(DriscollException.class, () -> categoryService.createCategory(USER_ID, TEST));
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_PARENT.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_PARENT.getMessage());
 
             when(categoryRepository.findByUserIdAndParentCategory(USER_ID, TEST.getParentCategory())).thenReturn(new ArrayList<CategoryDao>());
+
+            DriscollException actual = assertThrows(DriscollException.class, () -> categoryService.createCategory(USER_ID, TEST));
+
+
+            assertEquals(excepted.getStatus(), actual.getStatus());
+            assertEquals(excepted.getMessage(), actual.getMessage());
+        }
+
+        @Test
+        public void whenValidUserIdAndInvalidCategoryByName_throwDriscollException() throws DriscollException {
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_NAME.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_NAME.getMessage());
+
+            when(categoryRepository.findByUserIdAndCategoryName(USER_ID, TEST.getCategoryName())).thenReturn(DAO);
+
+            DriscollException actual = assertThrows(DriscollException.class, () -> categoryService.createCategory(USER_ID, TEST));
+
 
             assertEquals(excepted.getStatus(), actual.getStatus());
             assertEquals(excepted.getMessage(), actual.getMessage());

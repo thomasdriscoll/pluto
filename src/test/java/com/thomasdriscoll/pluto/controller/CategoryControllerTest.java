@@ -47,7 +47,6 @@ class CategoryControllerTest {
             isSavings(false).
             isIncome(false).
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
     private Category NO_PARENT = Category.builder().
@@ -57,7 +56,6 @@ class CategoryControllerTest {
             isSavings(false).
             isIncome(false).
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
     private Category BAD_CATEGORY = Category.builder().
@@ -67,7 +65,6 @@ class CategoryControllerTest {
             isSavings(false).
             isIncome(true).     //Booleans are mutually exclusive
             dollarAmount(50.0).
-            periodicity(1).
             build();
 
 

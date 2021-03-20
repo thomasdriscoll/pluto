@@ -28,7 +28,6 @@ public class CategoryDao {
 
     @Column(name="dollar_amount") Double dollarAmount;
 
-    @Column(name="periodicity") Integer periodicity;
 
     public CategoryDao(Category category){
         this.categoryName = category.getCategoryName();
@@ -38,7 +37,6 @@ public class CategoryDao {
         this.isSavings = category.getIsSavings();
         this.isIncome = category.getIsIncome();
         this.dollarAmount = category.getDollarAmount();
-        this.periodicity = category.getPeriodicity();
     }
 
     public Category toCategory(){
@@ -50,7 +48,6 @@ public class CategoryDao {
                 .isSavings(this.isSavings)
                 .isIncome(this.isIncome)
                 .dollarAmount(this.dollarAmount)
-                .periodicity(this.periodicity)
                 .build();
     }
 
