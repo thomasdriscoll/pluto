@@ -1,8 +1,12 @@
 package com.thomasdriscoll.pluto.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thomasdriscoll.pluto.lib.exceptions.CategoryExceptionEnums;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
 import com.thomasdriscoll.pluto.lib.exceptions.BudgetExceptionEnums;
+import com.thomasdriscoll.pluto.lib.models.Budget;
+import com.thomasdriscoll.pluto.lib.models.BudgetRequest;
+import com.thomasdriscoll.pluto.lib.models.Category;
 import com.thomasdriscoll.pluto.lib.responses.DriscollResponse;
 import com.thomasdriscoll.pluto.service.BudgetService;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +23,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -33,52 +41,95 @@ public class BudgetControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    //Testing variables
+    private final String USER_ID = "userId";
+
+    private final Category TEST = Category.builder().
+            categoryName("Books").
+            parentCategory("Shopping").
+            isNeed(false).
+            isWant(true).
+            isSavings(false).
+            isIncome(false).
+            dollarAmount(50.0).
+            build();
+
+    private final Category NO_PARENT = Category.builder().
+            categoryName("Books").
+            isNeed(false).
+            isWant(true).
+            isSavings(false).
+            isIncome(false).
+            dollarAmount(50.0).
+            build();
+
+    private final Double INCOME = 50000.0;
+    private final Integer ZIP = 12345;
+    private final String BUDGET_TYPE = "standard";
+    private final BudgetRequest REQUEST = new BudgetRequest(USER_ID, INCOME, ZIP, BUDGET_TYPE);
+    private final BudgetRequest NO_ZIP_REQUEST = new BudgetRequest(USER_ID, INCOME, null, BUDGET_TYPE);
+    private final BudgetRequest BAD_REQUEST = new BudgetRequest(USER_ID, INCOME, ZIP, null);
+    private final Budget BUDGET = new Budget(new ArrayList<>(Arrays.asList(TEST, NO_PARENT)));
+
     //Give each endpoint its own class of testing functions, so its easy to see what works and what doesn't
     @Nested
-    @DisplayName("dummyFunction method tests")
-    class dummyFunction_Tests{
-        //Variables used for testing this function specifically
-        private final String name = "Thomas";
-        private String badName = "Thummus";
-        private final String nameResponse = "My name is Thomas";
+    @DisplayName("Create Budget method tests")
+    class createBudget_tests{
+        String url = String.format("/users/%s/budget", USER_ID);
 
         @Test
-        public void givenName_whenGetName_thenReturnResponseEntity() throws Exception {
+        public void givenUserIdAndBudgetRequest_whenCreateBudget_thenReturnResponseEntity() throws Exception {
             // Declare expected response and other variables used only in this test
-            // Note: ObjectMapper here is mapping Java objects to JSON objects for you
-            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.OK.value(), nameResponse));
+            String request = new ObjectMapper().writeValueAsString(REQUEST);
+            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.CREATED.value(), BUDGET));
 
             //Mock what needs to be mocked
-            when(budgetService.dummyFunction(name)).thenReturn(nameResponse);
+            when(budgetService.createBudget(REQUEST)).thenReturn(BUDGET);
 
             //Do test
-            MvcResult result = mockMvc.perform(get(String.format("/%s", name))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-
-            //Assert if test worked
-            String actual = result.getResponse().getContentAsString();
-            assertEquals(expected, actual);
+            mockMvc.perform(post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json(expected))
+                    .andReturn();
         }
+
         @Test
-        public void givenInvalidName_whenGetName_thenReturnException() throws Exception, DriscollException {
+        public void givenUserIdAndCategoryWithNoZip_whenCreateBudget_thenReturnResponseEntity() throws Exception{
+            String request = new ObjectMapper().writeValueAsString(NO_ZIP_REQUEST);
+            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.CREATED.value(), BUDGET));
+
+            //Mock what needs to be mocked
+            when(budgetService.createBudget(NO_ZIP_REQUEST)).thenReturn(BUDGET);
+
+            //Do test
+            mockMvc.perform(post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request))
+                    .andExpect(status().isCreated())
+                    .andExpect(content().json(expected))
+                    .andReturn();
+        }
+
+        @Test
+        public void givenUserIdAndInvalidBudgetType_whenCreateBudget_thenThrowDriscollException() throws Exception{
             //Variables local to test
-            DriscollException exception = new DriscollException(BudgetExceptionEnums.TESTING_EXCEPTIONS.getStatus(), BudgetExceptionEnums.TESTING_EXCEPTIONS.getMessage());
+            String request = new ObjectMapper().writeValueAsString(BAD_REQUEST);
+            DriscollException exception = new DriscollException(BudgetExceptionEnums.INVALID_BUDGET_TYPE.getStatus(), BudgetExceptionEnums.INVALID_BUDGET_TYPE.getMessage());
             String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(exception.getStatus().value(), exception.getMessage()));
 
             //Mock what needs to be mocked
-            when(budgetService.dummyFunction(badName)).thenThrow(exception);
+            when(budgetService.createBudget(BAD_REQUEST)).thenThrow(exception);
 
-            //Do test
-            MvcResult result = mockMvc.perform(get(String.format("/%s", badName))
-                    .contentType(MediaType.APPLICATION_JSON))
+            //Do and assert test
+            mockMvc.perform(post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request))
                     .andExpect(status().isBadRequest())
+                    .andExpect(content().json(expected))
                     .andReturn();
-
-            //Assert if test worked
-            // assertEquals(expected, actual)
-            assertEquals(expected, result.getResponse().getContentAsString());
         }
+
     }
 }

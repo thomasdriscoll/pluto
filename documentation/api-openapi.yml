@@ -132,6 +132,9 @@ components:
         zipCode:
           type: integer
           example: 60622
+        budgetType:
+          type: string
+          example: "stable_income"
     BudgetResponse:
       type: object
       properties:

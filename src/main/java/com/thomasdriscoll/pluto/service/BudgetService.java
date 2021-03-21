@@ -2,17 +2,17 @@ package com.thomasdriscoll.pluto.service;
 
 import com.thomasdriscoll.pluto.lib.dao.BudgetRepo;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
-import com.thomasdriscoll.pluto.lib.exceptions.BudgetExceptionEnums;
+import com.thomasdriscoll.pluto.lib.models.Budget;
+import com.thomasdriscoll.pluto.lib.models.BudgetRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class BudgetService {
     public BudgetService(BudgetRepo budgetRepo){}
 
-    public String dummyFunction(String name) throws DriscollException {
-        if(name.equals("Thummus")){
-            throw new DriscollException(BudgetExceptionEnums.TESTING_EXCEPTIONS.getStatus(), BudgetExceptionEnums.TESTING_EXCEPTIONS.getMessage());
-        }
-        return "My name is " + name;
+    public Budget createBudget(BudgetRequest request) throws DriscollException {
+        return new Budget(new ArrayList<>());
     }
 }

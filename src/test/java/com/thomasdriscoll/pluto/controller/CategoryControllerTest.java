@@ -126,7 +126,6 @@ class CategoryControllerTest {
                     .andExpect(content().json(expected))
                     .andReturn();
         }
-
     }
 
     @Nested
