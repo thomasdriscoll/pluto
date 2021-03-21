@@ -14,6 +14,8 @@ public class CategoryDao {
     @Column(name="category_id")
     private Long id;
 
+    @Column(name="user_id") String userId;
+
     @Column(name="category_name") String categoryName;
 
     @Column(name="parent_category") String parentCategory;
@@ -29,7 +31,8 @@ public class CategoryDao {
     @Column(name="dollar_amount") Double dollarAmount;
 
 
-    public CategoryDao(Category category){
+    public CategoryDao(String userId, Category category){
+        this.userId = userId;
         this.categoryName = category.getCategoryName();
         this.parentCategory = category.getParentCategory();
         this.isNeed = category.getIsNeed();

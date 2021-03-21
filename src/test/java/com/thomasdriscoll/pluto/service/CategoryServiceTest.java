@@ -71,9 +71,9 @@ class CategoryServiceTest {
             dollarAmount(50.0).
             build();
 
-    private CategoryDao DAO = new CategoryDao(TEST);
-    private CategoryDao NO_PARENT_DAO = new CategoryDao(NO_PARENT);
-    private CategoryDao UPDATE_DAO = new CategoryDao(UPDATE_TEST);
+    private CategoryDao DAO = new CategoryDao(USER_ID, TEST);
+    private CategoryDao NO_PARENT_DAO = new CategoryDao(USER_ID, NO_PARENT);
+    private CategoryDao UPDATE_DAO = new CategoryDao(USER_ID, UPDATE_TEST);
     private List<CategoryDao> LIST_DAO = new ArrayList<CategoryDao>(){{ add(DAO); add(NO_PARENT_DAO); }};
 
     //Default to happy path so we can test each error precisely

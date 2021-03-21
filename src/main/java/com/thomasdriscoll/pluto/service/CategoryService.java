@@ -24,7 +24,7 @@ public class CategoryService {
         validateCategoryOnCreate(userId, category);
 
         //Save input
-        return categoryRepository.save(new CategoryDao(category)).toCategory();
+        return categoryRepository.save(new CategoryDao(userId, category)).toCategory();
     }
 
     public Category updateCategory(String userId, Category category) throws DriscollException {

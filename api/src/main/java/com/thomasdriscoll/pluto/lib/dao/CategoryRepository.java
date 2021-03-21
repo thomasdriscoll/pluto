@@ -1,6 +1,5 @@
 package com.thomasdriscoll.pluto.lib.dao;
 
-import com.thomasdriscoll.pluto.lib.models.Category;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
