@@ -51,6 +51,16 @@ public class CategoryDao {
                 .build();
     }
 
+    public void updateCategory(Category category){
+        this.categoryName = category.getCategoryName();
+        this.parentCategory = category.getParentCategory();
+        this.isNeed = category.getIsNeed();
+        this.isWant = category.getIsWant();
+        this.isSavings = category.getIsSavings();
+        this.isIncome = category.getIsIncome();
+        this.dollarAmount = category.getDollarAmount();
+    }
+
 
 
 }

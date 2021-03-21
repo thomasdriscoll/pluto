@@ -8,7 +8,6 @@ public enum CategoryExceptionEnums {
     INVALID_CATEGORY_STATE(HttpStatus.BAD_REQUEST, "Category must have one and only one boolean be true "),
     INVALID_CATEGORY_NAME(HttpStatus.BAD_REQUEST, "Category of this name already exists for this user"),
     INVALID_CATEGORY_PARENT(HttpStatus.BAD_REQUEST, "Category parent was invalid"),
-    INVALID_CATEGORY_PERIOD(HttpStatus.BAD_REQUEST, "Category period was invalid"),
     // 404 errors
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "Category does not exist for user");
 

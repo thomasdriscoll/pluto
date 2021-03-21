@@ -11,4 +11,5 @@ public interface CategoryRepository extends CrudRepository<CategoryDao, Long> {
     List<CategoryDao> findByUserId(String userId);
     List<CategoryDao> findByUserIdAndParentCategory(String userId, String parent);
     CategoryDao findByUserIdAndCategoryName(String userId, String categoryName);
+    void deleteByUserIdAndCategoryName(String userId, String categoryName);
 }
