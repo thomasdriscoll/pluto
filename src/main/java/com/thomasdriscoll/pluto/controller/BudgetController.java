@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users/{userId}/budget")
 public class BudgetController {
 
-    private BudgetService budgetService;
+    private final BudgetService budgetService;
 
     public BudgetController(BudgetService budgetService){
         this.budgetService = budgetService;
@@ -27,7 +27,19 @@ public class BudgetController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 new DriscollResponse(
                         HttpStatus.CREATED.value(),
-                        budgetService.createBudget(request)
+                        budgetService.createBudget(userId, request)
+                )
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<DriscollResponse<Budget>> getBudget(
+            @PathVariable String userId
+    ) throws DriscollException {
+        return ResponseEntity.ok(
+                new DriscollResponse(
+                        HttpStatus.OK.value(),
+                        budgetService.getBudget(userId)
                 )
         );
     }

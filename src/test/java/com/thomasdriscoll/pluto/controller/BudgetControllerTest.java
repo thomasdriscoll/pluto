@@ -84,7 +84,7 @@ public class BudgetControllerTest {
             String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.CREATED.value(), BUDGET));
 
             //Mock what needs to be mocked
-            when(budgetService.createBudget(REQUEST)).thenReturn(BUDGET);
+            when(budgetService.createBudget(USER_ID, REQUEST)).thenReturn(BUDGET);
 
             //Do test
             mockMvc.perform(post(url)
@@ -101,7 +101,7 @@ public class BudgetControllerTest {
             String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.CREATED.value(), BUDGET));
 
             //Mock what needs to be mocked
-            when(budgetService.createBudget(NO_ZIP_REQUEST)).thenReturn(BUDGET);
+            when(budgetService.createBudget(USER_ID, REQUEST)).thenReturn(BUDGET);
 
             //Do test
             mockMvc.perform(post(url)
@@ -120,7 +120,7 @@ public class BudgetControllerTest {
             String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(exception.getStatus().value(), exception.getMessage()));
 
             //Mock what needs to be mocked
-            when(budgetService.createBudget(BAD_REQUEST)).thenThrow(exception);
+            when(budgetService.createBudget(USER_ID, REQUEST)).thenThrow(exception);
 
             //Do and assert test
             mockMvc.perform(post(url)
@@ -130,6 +130,60 @@ public class BudgetControllerTest {
                     .andExpect(content().json(expected))
                     .andReturn();
         }
+    }
 
+    @Nested
+    @DisplayName("Get Budget tests")
+    class GetBudgetTests{
+        String url = String.format("/users/%s/budget", USER_ID);
+
+        @Test
+        public void givenUserId_whenGetBudget_thenReturnBudget() throws Exception {
+            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(HttpStatus.OK.value(), BUDGET));
+
+            //Mock what needs to be mocked
+            when(budgetService.getBudget(USER_ID)).thenReturn(BUDGET);
+
+            //Do test
+            mockMvc.perform(get(url)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(expected))
+                    .andReturn();
+        }
+
+        @Test
+        public void givenInvalidUserId_whenGetBudget_thenThrowDriscollException() throws Exception{
+            //Variables local to test
+            DriscollException exception = new DriscollException(BudgetExceptionEnums.USER_NOT_FOUND.getStatus(), BudgetExceptionEnums.USER_NOT_FOUND.getMessage());
+            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(exception.getStatus().value(), exception.getMessage()));
+
+            //Mock what needs to be mocked
+            when(budgetService.getBudget(USER_ID)).thenThrow(exception);
+
+            //Do and assert test
+            mockMvc.perform(get(url)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().json(expected))
+                    .andReturn();
+        }
+
+        @Test
+        public void givenValidUserIdButNoExistingBudget_whenGetBudget_thenThrowDriscollException() throws Exception{
+            //Variables local to test
+            DriscollException exception = new DriscollException(BudgetExceptionEnums.BUDGET_NOT_FOUND.getStatus(), BudgetExceptionEnums.BUDGET_NOT_FOUND.getMessage());
+            String expected = new ObjectMapper().writeValueAsString(new DriscollResponse<>(exception.getStatus().value(), exception.getMessage()));
+
+            //Mock what needs to be mocked
+            when(budgetService.getBudget(USER_ID)).thenThrow(exception);
+
+            //Do and assert test
+            mockMvc.perform(get(url)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andExpect(content().json(expected))
+                    .andReturn();
+        }
     }
 }

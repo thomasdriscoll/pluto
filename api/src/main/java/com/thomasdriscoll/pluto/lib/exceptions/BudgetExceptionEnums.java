@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 
 //This is just a sample enum for exceptions; delete!
 public enum BudgetExceptionEnums {
-    INVALID_BUDGET_TYPE(HttpStatus.BAD_REQUEST, "Budget type is invalid");
+    INVALID_BUDGET_TYPE(HttpStatus.BAD_REQUEST, "Budget type is invalid"),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "User not found"),
+    BUDGET_NOT_FOUND(HttpStatus.NOT_FOUND, "Budget not found");
 
     private final HttpStatus status;
     private final String message;

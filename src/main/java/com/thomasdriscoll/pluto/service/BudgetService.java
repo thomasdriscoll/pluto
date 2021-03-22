@@ -12,7 +12,11 @@ import java.util.ArrayList;
 public class BudgetService {
     public BudgetService(BudgetRepo budgetRepo){}
 
-    public Budget createBudget(BudgetRequest request) throws DriscollException {
+    public Budget createBudget(String userId, BudgetRequest request) throws DriscollException {
+        return new Budget(new ArrayList<>());
+    }
+
+    public Budget getBudget(String userId) throws DriscollException{
         return new Budget(new ArrayList<>());
     }
 }

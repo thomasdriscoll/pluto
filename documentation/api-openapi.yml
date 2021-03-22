@@ -167,9 +167,6 @@ components:
         dollarAmount:
           type: number
           example: 50
-        periodicity:
-          type: integer
-          example: 12
     CategoryResponse:
       type: object
       properties:
