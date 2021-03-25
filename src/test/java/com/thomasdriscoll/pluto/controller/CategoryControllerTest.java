@@ -1,12 +1,10 @@
 package com.thomasdriscoll.pluto.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thomasdriscoll.pluto.lib.exceptions.BudgetExceptionEnums;
-import com.thomasdriscoll.pluto.lib.exceptions.CategoryExceptionEnums;
+import com.thomasdriscoll.pluto.lib.enums.CategoryExceptionEnums;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
 import com.thomasdriscoll.pluto.lib.models.Category;
 import com.thomasdriscoll.pluto.lib.responses.DriscollResponse;
-import com.thomasdriscoll.pluto.service.BudgetService;
 import com.thomasdriscoll.pluto.service.CategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

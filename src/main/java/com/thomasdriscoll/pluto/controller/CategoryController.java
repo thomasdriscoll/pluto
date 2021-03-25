@@ -41,6 +41,5 @@ public class CategoryController {
     ) throws DriscollException {
         categoryService.deleteCategory(userId, categoryName);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new DriscollResponse(HttpStatus.OK.value(), null));
-
     }
 }

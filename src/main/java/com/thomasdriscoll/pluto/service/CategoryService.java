@@ -2,7 +2,7 @@ package com.thomasdriscoll.pluto.service;
 
 import com.thomasdriscoll.pluto.lib.dao.CategoryDao;
 import com.thomasdriscoll.pluto.lib.dao.CategoryRepository;
-import com.thomasdriscoll.pluto.lib.exceptions.CategoryExceptionEnums;
+import com.thomasdriscoll.pluto.lib.enums.CategoryExceptionEnums;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
 import com.thomasdriscoll.pluto.lib.models.Category;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,7 @@ public class CategoryService {
     // Need to update this validateUser with call to UserApi
     private void validateUser(String userId) throws DriscollException {
         if(categoryRepository.findByUserId(userId).isEmpty()){
-            throw new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            throw new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
         }
     }
 

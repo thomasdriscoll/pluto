@@ -1,9 +1,8 @@
 package com.thomasdriscoll.pluto.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thomasdriscoll.pluto.lib.exceptions.CategoryExceptionEnums;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
-import com.thomasdriscoll.pluto.lib.exceptions.BudgetExceptionEnums;
+import com.thomasdriscoll.pluto.lib.enums.BudgetExceptionEnums;
 import com.thomasdriscoll.pluto.lib.models.Budget;
 import com.thomasdriscoll.pluto.lib.models.BudgetRequest;
 import com.thomasdriscoll.pluto.lib.models.Category;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 
 import java.util.ArrayList;
@@ -65,10 +63,10 @@ public class BudgetControllerTest {
 
     private final Double INCOME = 50000.0;
     private final Integer ZIP = 12345;
-    private final String BUDGET_TYPE = "standard";
-    private final BudgetRequest REQUEST = new BudgetRequest(USER_ID, INCOME, ZIP, BUDGET_TYPE);
-    private final BudgetRequest NO_ZIP_REQUEST = new BudgetRequest(USER_ID, INCOME, null, BUDGET_TYPE);
-    private final BudgetRequest BAD_REQUEST = new BudgetRequest(USER_ID, INCOME, ZIP, null);
+    private final String BUDGET_TYPE = "STABLE_INCOME";
+    private final BudgetRequest REQUEST = new BudgetRequest(INCOME, ZIP, BUDGET_TYPE);
+    private final BudgetRequest NO_ZIP_REQUEST = new BudgetRequest(INCOME, null, BUDGET_TYPE);
+    private final BudgetRequest BAD_REQUEST = new BudgetRequest(INCOME, ZIP, null);
     private final Budget BUDGET = new Budget(new ArrayList<>(Arrays.asList(TEST, NO_PARENT)));
 
     //Give each endpoint its own class of testing functions, so its easy to see what works and what doesn't

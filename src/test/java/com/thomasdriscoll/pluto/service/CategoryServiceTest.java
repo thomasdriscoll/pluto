@@ -2,7 +2,7 @@ package com.thomasdriscoll.pluto.service;
 
 import com.thomasdriscoll.pluto.lib.dao.CategoryDao;
 import com.thomasdriscoll.pluto.lib.dao.CategoryRepository;
-import com.thomasdriscoll.pluto.lib.exceptions.CategoryExceptionEnums;
+import com.thomasdriscoll.pluto.lib.enums.CategoryExceptionEnums;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
 import com.thomasdriscoll.pluto.lib.models.Category;
 import org.junit.jupiter.api.BeforeEach;
@@ -107,7 +107,7 @@ class CategoryServiceTest {
 
         @Test
         public void whenInvalidUserIdAndValidCategory_throwDriscollException() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
 
             when(categoryRepository.findByUserId(BAD_USER_ID)).thenReturn(new ArrayList<CategoryDao>());
 
@@ -120,7 +120,7 @@ class CategoryServiceTest {
 
         @Test
         public void whenInvalidUserIdAndInValidCategory_throwDriscollExceptionOnUserId() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
 
             when(categoryRepository.findByUserId(BAD_USER_ID)).thenReturn(new ArrayList<CategoryDao>());
 
@@ -182,7 +182,7 @@ class CategoryServiceTest {
 
         @Test
         public void whenInvalidUserIdAndValidCategory_throwDriscollException() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
 
             when(categoryRepository.findByUserId(BAD_USER_ID)).thenReturn(new ArrayList<CategoryDao>());
 
@@ -195,7 +195,7 @@ class CategoryServiceTest {
 
         @Test
         public void whenInvalidUserIdAndInValidCategory_throwDriscollExceptionOnUserId() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
 
             when(categoryRepository.findByUserId(BAD_USER_ID)).thenReturn(new ArrayList<CategoryDao>());
 
@@ -264,7 +264,7 @@ class CategoryServiceTest {
 
         @Test
         public void whenInvalidUserIdAndValidCategory_throwDriscollException() throws DriscollException {
-            DriscollException excepted = new DriscollException(CategoryExceptionEnums.INVALID_USER_ID.getStatus(), CategoryExceptionEnums.INVALID_USER_ID.getMessage());
+            DriscollException excepted = new DriscollException(CategoryExceptionEnums.USER_NOT_FOUND.getStatus(), CategoryExceptionEnums.USER_NOT_FOUND.getMessage());
 
             when(categoryRepository.findByUserId(BAD_USER_ID)).thenReturn(new ArrayList<CategoryDao>());
 

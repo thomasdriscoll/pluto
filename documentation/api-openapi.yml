@@ -123,9 +123,6 @@ components:
     BudgetRequest:
       type: object
       properties:
-        userId:
-          type: string
-          example: "dummyUserId12345"
         income:
           type: number
           example: 50000
