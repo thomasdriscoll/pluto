@@ -58,6 +58,8 @@ public class CategoryService {
         validateLogic(category.getIsNeed(), category.getIsWant(), category.getIsSavings(), category.getIsIncome());
         if(category.getParentCategory() != null){
             validateParent(userId, category.getParentCategory());
+        } else {
+            category.setParentCategory("");
         }
         if(categoryRepository.findByUserIdAndCategoryName(userId, category.getCategoryName()) != null){
             throw new DriscollException(CategoryExceptionEnums.INVALID_CATEGORY_NAME.getStatus(), CategoryExceptionEnums.INVALID_CATEGORY_NAME.getMessage());

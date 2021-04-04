@@ -3,9 +3,11 @@ package com.thomasdriscoll.pluto.service;
 import com.thomasdriscoll.pluto.lib.dao.BudgetRepo;
 import com.thomasdriscoll.pluto.lib.enums.BudgetExceptionEnums;
 import com.thomasdriscoll.pluto.lib.enums.BudgetType;
-import com.thomasdriscoll.pluto.lib.enums.CategoryExceptionEnums;
+import com.thomasdriscoll.pluto.lib.enums.DefaultCategories;
 import com.thomasdriscoll.pluto.lib.exceptions.DriscollException;
+import com.thomasdriscoll.pluto.lib.models.Budget;
 import com.thomasdriscoll.pluto.lib.models.BudgetRequest;
+import com.thomasdriscoll.pluto.lib.models.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,8 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -85,8 +88,21 @@ class BudgetServiceTest {
 
         @Nested
         @DisplayName("Stable Income test")
-        class StableIncomeTests{
+        class DefaultBudgetTests{
+            @BeforeEach
+            public void setup() throws DriscollException {
+                when(categoryService.createCategory(any(), any())).thenReturn(Category.builder().build());
+            }
+            @Test
+            public void givenUserIdAndValidRequest_whenCreateBudget_thenReturnBudgetWithCorrectNumberOfCategories() throws DriscollException {
+                int numberOfCategoriesExpected = DefaultCategories.values().length +1; //+1 for income
+                Budget budget = budgetService.createBudget(USER_ID, REQUEST);
+                assertEquals(budget.getCategories().size(), numberOfCategoriesExpected);
+            }
+            @Test
+            public void givenUserIdAndValidRequest_whenCreateBudget_thenThrowCategoryException() throws DriscollException {
 
+            }
         }
     }
 }
